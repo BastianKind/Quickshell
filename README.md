@@ -2,7 +2,7 @@
 
 ## DISCLAIMER
 
-I am neither an expert nor a experienced quickshell.  
+I am neither an expert nor a experienced quickshell user.  
 This Repo is purely to make the entry into quickshell a bit easier since the documentation is, lacking...  
 
 ## Images
