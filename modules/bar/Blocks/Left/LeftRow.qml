@@ -16,5 +16,6 @@ Row {
         text: "left"
         color: "white"
         font.pixelSize: 16
+        font.family: "JetBrainsMono"
     }
 }
