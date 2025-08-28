@@ -24,6 +24,7 @@ PanelWindow {
         color: "#1a1a1a"
         LeftRow {
             id: leftRow
+            screenName: root.screen.name
         }
 
         CenterRow {

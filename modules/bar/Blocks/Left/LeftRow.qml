@@ -9,13 +9,12 @@ Row {
         left: parent.left
         leftMargin: 16
     }
-    Text {
-        anchors {
-            verticalCenter: parent.verticalCenter
-        }
-        text: "left"
-        color: "white"
-        font.pixelSize: 16
-        font.family: "JetBrainsMono"
+    required property string screenName
+    spacing: 16
+    ArchIcon {
+        id: archIcon
+    }
+    Workspaces {
+        screenName: root.screenName
     }
 }

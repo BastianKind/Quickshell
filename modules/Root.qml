@@ -26,17 +26,10 @@ Variants {
                 Region {
                     x: 0
                     y: 0
-                    width: root.modelData.width
-                    height: root.modelData.height
+                    width: root.modelData.width - 10
+                    height: root.modelData.height - 10
                 }
             ]
-        }
-        Rectangle {
-            anchors.fill: parent
-            anchors.margins: 0
-            color: "transparent"
-            border.width: 5
-            border.color: "#333333"
         }
         Bar {
             id: bar

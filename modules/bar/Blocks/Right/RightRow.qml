@@ -9,13 +9,5 @@ Row {
         right: parent.right
         rightMargin: 16
     }
-    Text {
-        anchors {
-            verticalCenter: parent.verticalCenter
-        }
-        text: "right"
-        color: "white"
-        font.pixelSize: 16
-        font.family: "JetBrainsMono"
-    }
+    Time {}
 }
