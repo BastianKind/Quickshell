@@ -30,7 +30,7 @@ Scope {
             id: panel
             property var modelData
             screen: modelData   // attach to this screen
-            color: "#00ffffff"
+            color: "transparent"
             anchors {
                 top: true
                 left: true
@@ -41,9 +41,11 @@ Scope {
                 barInstances.push(bar);
             }
 
-            implicitHeight: totalHeight
-
             property var totalHeight: bar.implicitHeight + dock.height
+
+            onTotalHeightChanged: {
+                panel.implicitHeight = totalHeight
+            }
 
             margins {
                 top: 5
@@ -67,7 +69,7 @@ Scope {
                     color:"#1a1a1a"
                     radius: 16
                     implicitHeight: 40
-                    bottomLeftRadius: dock.height > 0 ? 0 : 16
+                    bottomLeftRadius: dock.height > 2 ? 0 : 16
 
                     Row {
                         id: workspacesRow
@@ -101,16 +103,18 @@ Scope {
                             centerIn: parent
                             verticalCenter: parent.verticalCenter
                         }
-                        // spacing: 16
+                        spacing: 16
 
                         // Text {
                         //     text: "centered"
                         //     color: "#ffffff"
                         // }
                         // Text {
-                        //     text: "centered2"
+                        //     id: focusedAppText
                         //     color: "#ffffff"
+                        //     font.pixelSize: 12
                         // }
+
                     }
                     Row {
                         id: endRow
@@ -132,105 +136,14 @@ Scope {
                     }
                     
                 }
-                Rectangle {
+                Dock {
                     id: dock
-                    height: dockMouseArea.containsMouse ? 40 : 0
-                    width: (24*4 + 16*6)
-                    bottomLeftRadius: 16
-                    bottomRightRadius: 16
-                    color: "#1a1a1a"
-                    border.color: "#333333"
-                    border.width: 0
-                    Behavior on height {
-                        NumberAnimation { duration: 100; easing.type: Easing.OutCurve }
-                    }
                     anchors {
                         left: parent.left
                         top: bar.bottom
                     }
-                    MouseArea {
-                        id: dockMouseArea
-                        hoverEnabled: true
-                        anchors.fill: parent
-                    }
-
-                    Row {
-                        anchors.centerIn: parent
-                        visible: dock.height > 20
-                        spacing: 16
-                        property var iconHeight: 24
-                        property var iconWidth: 24 
-                        
-                        Process {
-                            id: processHandler
-                        }
-                        
-                        Rectangle {
-                                height: parent.iconHeight
-                                width: parent.iconWidth
-                                color: "transparent"
-                            Image {
-                                source: "./icons/i8-shutdown.png"
-                                anchors.fill: parent
-                                smooth: true
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: processHandler.exec(["systemctl","poweroff"])
-                                cursorShape: Qt.PointingHandCursor
-                            }
-                        }
-                        Rectangle {
-                                height: parent.iconHeight
-                                width: parent.iconWidth
-                                color: "transparent"
-                            Image {
-                                source: "./icons/i8-exit.png"
-                                anchors.fill: parent
-                                smooth: true
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: processHandler.exec(["hyprctl","dispatch", "exit"])
-                                cursorShape: Qt.PointingHandCursor
-                            }
-                        }
-                        Rectangle {
-                                height: parent.iconHeight
-                                width: parent.iconWidth
-                                color: "transparent"
-                            Image {
-                                source: "./icons/i8-lock.svg"
-                                anchors.fill: parent
-                                smooth: true
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: processHandler.exec(["hyprlock"])
-                                cursorShape: Qt.PointingHandCursor
-                            }
-                        }
-                        Rectangle {
-                                height: parent.iconHeight
-                                width: parent.iconWidth
-                                color: "transparent"
-                            Image {
-                                source: "./icons/i8-restart.svg"
-                                anchors.fill: parent
-                                smooth: true
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: processHandler.exec(["reboot"])
-                                cursorShape: Qt.PointingHandCursor
-                            }
-                        }
-                    }
                 }
+
                 Rectangle {
                     id: barBorder
                     anchors.fill: bar
