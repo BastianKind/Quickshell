@@ -15,11 +15,10 @@ Row {
         property var modelData
 
         Rectangle {
+            id: rec
             visible: modelData.monitor.name === workspacesRow.screenName
             property string activeColor: "#4a9eff"
             property string inactiveColor: "#555555"
-
-            id: rec
             width: 32
             height: 24
             radius: 15
@@ -28,7 +27,7 @@ Row {
             border.width: 2
 
             Component.onCompleted: {
-                workspacesRow.recInstances.push(rec)
+                workspacesRow.recInstances.push(rec);
             }
 
             MouseArea {
@@ -38,32 +37,31 @@ Row {
                 hoverEnabled: !isActiveWorkspace
                 anchors.fill: parent
                 onClicked: {
-                    if(!isActiveWorkspace){
-                        Hyprland.dispatch("workspace " + modelData.id)
-                        oldColor = parent.inactiveColor
-                        parent.color = parent.activeColor
-                        enabled = isActiveWorkspace
+                    if (!isActiveWorkspace) {
+                        Hyprland.dispatch("workspace " + modelData.id);
+                        oldColor = parent.inactiveColor;
+                        parent.color = parent.activeColor;
+                        enabled = isActiveWorkspace;
                     }
                 }
                 onIsActiveWorkspaceChanged: {
-                    if(!isActiveWorkspace){
-                        parent.color = parent.inactiveColor
-                        oldColor = ""
-                        enabled = !isActiveWorkspace
-                    }
-                    else {
-                        parent.color = parent.activeColor
-                        oldColor = ""
-                        enabled = !isActiveWorkspace
+                    if (!isActiveWorkspace) {
+                        parent.color = parent.inactiveColor;
+                        oldColor = "";
+                        enabled = !isActiveWorkspace;
+                    } else {
+                        parent.color = parent.activeColor;
+                        oldColor = "";
+                        enabled = !isActiveWorkspace;
                     }
                 }
                 onEntered: {
-                    oldColor = parent.color
-                    parent.color = hoverColor
+                    oldColor = parent.color;
+                    parent.color = hoverColor;
                 }
                 onExited: {
-                    parent.color = oldColor
-                    oldColor = parent.inactiveColor
+                    parent.color = oldColor;
+                    oldColor = parent.inactiveColor;
                 }
             }
 
