@@ -4,11 +4,24 @@ import Quickshell.Io
 
 Text {
     id: root
-
     function formatVolume(): string {
         Pipewire.defaultAudioSink.audio.volume = new Number(Pipewire.defaultAudioSink.audio.volume.toFixed(2)).valueOf();
-        return (Pipewire.defaultAudioSink.audio.volume * 100).toFixed(0) + "%";
+        if(Pipewire.defaultAudioSink.audio.muted){
+            return "󰝟"; 
+        }
+        else {
+            return ((Pipewire.defaultAudioSink.audio.volume * 100).toFixed(0) + "%");
+        }
     }
+    Timer {
+        running: true
+        repeat: false
+        interval: 50
+        onTriggered: {
+            root.text = root.formatVolume()
+        }
+    }
+
     color: "#ffffff"
     font.pixelSize: 16
     font.family: "JetBrainsMono"
@@ -21,9 +34,6 @@ Text {
     PwObjectTracker {
         id: tracker
         objects: [Pipewire.defaultAudioSink]
-        Component.onCompleted: {
-            root.isReady = Pipewire.ready;
-        }
     }
     text: formatVolume()
 
@@ -42,6 +52,7 @@ Text {
                 processHandler.exec(["sh", "-c", "pavucontrol"]);
             } else if (event.button === Qt.RightButton) {
                 Pipewire.defaultAudioSink.audio.muted = !Pipewire.defaultAudioSink.audio.muted;
+                root.text = root.formatVolume()
             }
         }
         cursorShape: Qt.PointingHandCursor
