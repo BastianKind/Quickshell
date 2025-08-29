@@ -3,19 +3,26 @@ import QtQuick
 import Quickshell.Io
 
 Text {
+    id: root
     color: "#ffffff"
     font.pixelSize: 16
     font.family: "JetBrainsMono"
-    width: 50
 
     anchors.verticalCenter: parent.verticalCenter
+    property bool isReady: Pipewire.ready
 
     PwObjectTracker {
         id: tracker
         objects: [Pipewire.defaultAudioSink]
+        Component.onCompleted: {
+            root.isReady = Pipewire.ready
+        }
     }
-    text: tracker.objects[0].audio.volume.toFixed(2) * 100 + "%"
-    height: console.log(tracker.objects[0].description)
+    text: Pipewire.defaultAudioSink.audio.volume.toFixed(2) * 100 + "%"
+
+    onIsReadyChanged: {
+        root.text = Pipewire.defaultAudioSink.audio.volume.toFixed(2) * 100 + "%"
+    }
 
     Process {
         id: processHandler
@@ -35,15 +42,6 @@ Text {
         WheelHandler {
             property: "rotation"
             onWheel: event => console.log("rotation", event.angleDelta.y, "scaled", rotation, "@", point.position, "=>", parent.rotation)
-        }
-    }
-
-    Timer {
-        interval: 1000
-        running: true
-        repeat: true
-        onTriggered: {
-            tracker.objects = [Pipewire.defaultAudioSink];
         }
     }
 }

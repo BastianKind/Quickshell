@@ -9,6 +9,7 @@ Row {
         right: parent.right
         rightMargin: 16
     }
+    spacing: 16
     Volume {}
     Time {}
 }
