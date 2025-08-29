@@ -1,5 +1,6 @@
 import Quickshell
 import QtQuick
+import Quickshell.Services.SystemTray
 
 Row {
     id: root
@@ -12,4 +13,5 @@ Row {
     spacing: 16
     Volume {}
     Time {}
+    Tray {}
 }
