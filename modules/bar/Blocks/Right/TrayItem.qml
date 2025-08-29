@@ -11,7 +11,8 @@ MouseArea {
 
     acceptedButtons: Qt.LeftButton | Qt.RightButton
     implicitWidth: 20
-    implicitHeight: 40
+    implicitHeight: 20
+    anchors.verticalCenter: parent.verticalCenter
 
     onClicked: event => {
         if (event.button === Qt.LeftButton)
@@ -22,8 +23,7 @@ MouseArea {
 
     IconImage {
         id: icon
-        anchors.centerIn: parent
-        implicitSize: 20
+        anchors.fill: parent
         source: {
             let icon = root.modelData.icon;
             if (icon.includes("?path=")) {
