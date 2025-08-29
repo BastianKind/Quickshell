@@ -4,6 +4,11 @@ import Quickshell.Io
 
 Text {
     id: root
+
+    function formatVolume(): string {
+        Pipewire.defaultAudioSink.audio.volume = new Number(Pipewire.defaultAudioSink.audio.volume.toFixed(2)).valueOf();
+        return (Pipewire.defaultAudioSink.audio.volume * 100).toFixed(0) + "%";
+    }
     color: "#ffffff"
     font.pixelSize: 16
     font.family: "JetBrainsMono"
@@ -11,17 +16,19 @@ Text {
     anchors.verticalCenter: parent.verticalCenter
     property bool isReady: Pipewire.ready
 
+    property int amount: 1
+
     PwObjectTracker {
         id: tracker
         objects: [Pipewire.defaultAudioSink]
         Component.onCompleted: {
-            root.isReady = Pipewire.ready
+            root.isReady = Pipewire.ready;
         }
     }
-    text: Pipewire.defaultAudioSink.audio.volume.toFixed(2) * 100 + "%"
+    text: formatVolume()
 
     onIsReadyChanged: {
-        root.text = Pipewire.defaultAudioSink.audio.volume.toFixed(2) * 100 + "%"
+        root.text = root.formatVolume();
     }
 
     Process {
@@ -34,14 +41,24 @@ Text {
             if (event.button === Qt.LeftButton) {
                 processHandler.exec(["sh", "-c", "pavucontrol"]);
             } else if (event.button === Qt.RightButton) {
-                tracker.objects[0].audio.muted = !tracker.objects[0].audio.muted;
+                Pipewire.defaultAudioSink.audio.muted = !Pipewire.defaultAudioSink.audio.muted;
             }
         }
         cursorShape: Qt.PointingHandCursor
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         WheelHandler {
-            property: "rotation"
-            onWheel: event => console.log("rotation", event.angleDelta.y, "scaled", rotation, "@", point.position, "=>", parent.rotation)
+            orientation: Qt.Vertical
+            property: "y"
+            rotationScale: 15
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+            onWheel: event => {
+                if (event.angleDelta.y > 0) {
+                    Pipewire.defaultAudioSink.audio.volume += root.amount / 100;
+                } else {
+                    Pipewire.defaultAudioSink.audio.volume -= root.amount / 100;
+                }
+                root.text = root.formatVolume();
+            }
         }
     }
 }
