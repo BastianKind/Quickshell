@@ -11,7 +11,7 @@ Row {
     }
     Text {
         id: playerText
-        property MprisPlayer player: Mpris.players.values[0]
+        property MprisPlayer player: Mpris.players.values[Mpris.players.values.length-1]
         text: player.trackTitle + " ~ " + player.trackArtist
         color: "white"
         font.pixelSize: 16
@@ -21,7 +21,7 @@ Row {
         }
 
         MouseArea {
-            property MprisPlayer player: Mpris.players.values[0]
+            property MprisPlayer player: Mpris.players.values[Mpris.players.values.length-1]
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
             onClicked: event => {
