@@ -15,8 +15,8 @@ Text {
     }
     Timer {
         running: true
-        repeat: false
-        interval: 50
+        repeat: !Pipewire.ready
+        interval: 25
         onTriggered: {
             root.text = root.formatVolume()
         }
