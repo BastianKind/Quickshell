@@ -1,10 +1,35 @@
 import Quickshell
 import QtQuick
+import "../../../singletons"
 
-Image {
+Rectangle {
+    id: root
+
+    anchors {
+        verticalCenter: parent.verticalCenter
+    }
     height: 24
     width: 24
-    source: "../../icons/arch-linux-white.svg"
-    anchors.verticalCenter: parent.verticalCenter
-    smooth: true
+    color: "transparent"
+    required property string screenName
+
+    Image {
+        height: 24
+        width: 24
+        source: "../../icons/arch-linux-white.svg"
+        anchors.verticalCenter: parent.verticalCenter
+        smooth: true
+    }
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: true
+        onEntered: {
+            PowerMenuHandler.togglePowerMenu(root.screenName, true)
+            console.log(PowerMenuHandler.powerMenu)
+        }
+        onExited: {
+            PowerMenuHandler.togglePowerMenu(root.screenName, false)
+            console.log(PowerMenuHandler.powerMenu)
+        }
+    }
 }

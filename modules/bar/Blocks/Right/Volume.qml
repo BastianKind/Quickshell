@@ -28,6 +28,7 @@ Text {
 
     anchors.verticalCenter: parent.verticalCenter
     property bool isReady: Pipewire.ready
+    property var originVolume: Pipewire.defaultAudioSink.audio.volume
 
     property int amount: 1
 
@@ -38,6 +39,10 @@ Text {
     text: formatVolume()
 
     onIsReadyChanged: {
+        root.text = root.formatVolume();
+    }
+
+    onOriginVolumeChanged: {
         root.text = root.formatVolume();
     }
 

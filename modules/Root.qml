@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell
 import "./bar/"
+import "./powerMenu/"
 
 Variants {
     model: Quickshell.screens
@@ -26,13 +27,18 @@ Variants {
                 Region {
                     x: 0
                     y: 0
-                    width: root.modelData.width - 10
-                    height: root.modelData.height - 10
+                    width: root.modelData.width
+                    height: root.modelData.height
                 }
             ]
         }
         Bar {
             id: bar
+            barHeight: root.barHeight
+            modelData: root.modelData
+        }
+        PowerMenu {
+            id: powerMenu
             barHeight: root.barHeight
             modelData: root.modelData
         }

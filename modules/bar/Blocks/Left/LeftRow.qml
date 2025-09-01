@@ -13,6 +13,7 @@ Row {
     spacing: 16
     ArchIcon {
         id: archIcon
+        screenName: root.screenName
     }
     Workspaces {
         screenName: root.screenName
