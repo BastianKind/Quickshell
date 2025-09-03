@@ -10,8 +10,18 @@ Row {
         verticalCenter: parent.verticalCenter
     }
 
+    function filterWorkspaces() {
+        let workspaces = [];
+        for (var workspace of Hyprland.workspaces.values) {
+            if (!workspace.name.includes("special")) {
+                workspaces.push(workspace);
+            }
+        }
+        return workspaces;
+    }
+
     Repeater {
-        model: Hyprland.workspaces
+        model: workspacesRow.filterWorkspaces()
         property var modelData
 
         Rectangle {

@@ -46,14 +46,14 @@ MouseArea {
         //     colorizationColor: root.colour
         // }
 
-        layer.onEnabledChanged: {
-            if (layer.enabled && status === Image.Ready)
-                CUtils.getDominantColour(this, c => dominantColour = c);
-        }
+        // layer.onEnabledChanged: {
+        //     if (layer.enabled && status === Image.Ready)
+        //         CUtils.getDominantColour(this, c => dominantColour = c);
+        // }
 
-        onStatusChanged: {
-            if (layer.enabled && status === Image.Ready)
-                CUtils.getDominantColour(this, c => dominantColour = c);
-        }
+        // onStatusChanged: {
+        //     if (layer.enabled && status === Image.Ready)
+        //         CUtils.getDominantColour(this, c => dominantColour = c);
+        // }
     }
 }
