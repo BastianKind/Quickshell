@@ -47,9 +47,9 @@ PanelWindow {
     // Define the menu model as a property for clarity
     property var menuModel: [
         { icon: "./Icons/i8-shutdown.png", cmd: ["systemctl", "poweroff"] },
-        { icon: "./Icons/i8-exit.png", cmd: ["hyprctl", "dispatch", "exit"] },
         { icon: "./Icons/i8-lock.svg", cmd: ["hyprlock"] },
-        { icon: "./Icons/i8-restart.svg", cmd: ["reboot"] }
+        { icon: "./Icons/i8-restart.svg", cmd: ["reboot"] },
+        { icon: "./Icons/i8-sleep.png", cmd: ["systemctl", "suspend"] },
     ]
 
     Rectangle {
