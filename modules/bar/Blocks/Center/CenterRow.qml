@@ -12,7 +12,8 @@ Row {
     Text {
         id: playerText
         property MprisPlayer player: Mpris.players.values[Mpris.players.values.length - 1]
-        text: player.trackTitle + " ~ " + player.trackArtist
+        property string provText: player.trackTitle + " ~ " + player.trackArtist
+        text: provText == " ~ " ? "" : provText
         color: "white"
         font.pixelSize: 16
         font.family: "JetBrainsMono"
