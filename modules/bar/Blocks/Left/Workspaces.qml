@@ -29,7 +29,7 @@ Row {
             visible: modelData.monitor.name === workspacesRow.screenName
             property string activeColor: "#4a9eff"
             property string inactiveColor: "#555555"
-            width: modelData.name.length * 7 + 16
+            width: textItem.implicitWidth + 16
             height: 24
             radius: 15
             color: modelData.active ? activeColor : inactiveColor
@@ -76,11 +76,13 @@ Row {
             }
 
             Text {
+                id: textItem
                 text: modelData.name
                 anchors.centerIn: parent
                 color: modelData.active ? "#ffffff" : "#cccccc"
                 font.pixelSize: 12
                 font.family: "Inter, sans-serif"
+                verticalAlignment: Text.AlignVCenter
             }
         }
     }
