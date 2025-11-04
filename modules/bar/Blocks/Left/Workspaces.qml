@@ -29,7 +29,7 @@ Row {
             visible: modelData.monitor.name === workspacesRow.screenName
             property string activeColor: "#4a9eff"
             property string inactiveColor: "#555555"
-            width: textItem.implicitWidth + 16
+            width: textItem.implicitWidth + 16 * 1.5
             height: 24
             radius: 15
             color: modelData.active ? activeColor : inactiveColor

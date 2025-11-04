@@ -12,6 +12,7 @@ Row {
     }
     spacing: 16
     Volume {}
+    Battery {}
     Time {}
     Tray {}
 }
