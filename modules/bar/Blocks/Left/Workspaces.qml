@@ -81,7 +81,7 @@ Row {
                 anchors.centerIn: parent
                 color: modelData.active ? "#ffffff" : "#cccccc"
                 font.pixelSize: 12
-                font.family: "Inter, sans-serif"
+                font.family: "JetBrainsMono Nerd Font Mono"
                 verticalAlignment: Text.AlignVCenter
             }
         }

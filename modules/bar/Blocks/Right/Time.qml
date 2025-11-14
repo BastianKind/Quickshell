@@ -10,7 +10,7 @@ Text {
 
     color: "#ffffff"
     font.pixelSize: 16
-    font.family: "JetBrainsMono"
+    font.family: "JetBrainsMono Nerd Font Mono"
 
     anchors.verticalCenter: parent.verticalCenter
 

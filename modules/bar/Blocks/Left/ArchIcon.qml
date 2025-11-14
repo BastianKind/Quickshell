@@ -25,11 +25,9 @@ Rectangle {
         hoverEnabled: true
         onEntered: {
             PowerMenuHandler.togglePowerMenu(root.screenName, true)
-            console.log(PowerMenuHandler.powerMenu)
         }
         onExited: {
             PowerMenuHandler.togglePowerMenu(root.screenName, false)
-            console.log(PowerMenuHandler.powerMenu)
         }
     }
 }

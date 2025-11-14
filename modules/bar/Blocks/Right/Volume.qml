@@ -24,10 +24,11 @@ Text {
 
     color: "#ffffff"
     font.pixelSize: 16
-    font.family: "JetBrainsMono"
+    font.family: "JetBrainsMono Nerd Font Mono"
 
     anchors.verticalCenter: parent.verticalCenter
     property bool isReady: Pipewire.ready
+    property bool isMuted: Pipewire.defaultAudioSink.audio.muted
     property var originVolume: Pipewire.defaultAudioSink.audio.volume
 
     property int amount: 1
@@ -39,6 +40,9 @@ Text {
     text: formatVolume()
 
     onIsReadyChanged: {
+        root.text = root.formatVolume();
+    }
+    onIsMutedChanged: {
         root.text = root.formatVolume();
     }
 
