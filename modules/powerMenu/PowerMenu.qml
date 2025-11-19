@@ -14,8 +14,8 @@ PanelWindow {
         left: true
     }
 
+    property bool shouldBeVisible: PowerMenuHandler.powerMenu && PowerMenuHandler.screenName == root.screen.name
     property bool isVisible: false
-    property bool finalVisibility: false
     visible: finalVisibility || menu.height > 0
     implicitHeight: barHeight
     implicitWidth: 24 * 8
@@ -42,13 +42,17 @@ PanelWindow {
         }
     }
 
+    property bool finalVisibility: false
+
     Timer {
         id: graceTimer
         running: false
         repeat: false
         interval: 500
         onTriggered: {
-            root.finalVisibility = menuMouseArea.containsMouse ? true : (PowerMenuHandler.powerMenu && PowerMenuHandler.screenName == root.screen.name)
+            if (!menuMouseArea.containsMouse) {
+                root.finalVisibility = false
+            }
         }
     }
 
