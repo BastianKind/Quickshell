@@ -13,6 +13,7 @@ MouseArea {
     implicitWidth: 20
     implicitHeight: 20
     anchors.verticalCenter: parent.verticalCenter
+    cursorShape: Qt.PointingHandCursor
 
     onClicked: event => {
         if (event.button === Qt.LeftButton)

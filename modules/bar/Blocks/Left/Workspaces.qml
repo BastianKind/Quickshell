@@ -26,13 +26,14 @@ Row {
 
         Rectangle {
             id: rec
-            visible: modelData.monitor.name === workspacesRow.screenName
+            visible: modelData.monitor !== null && modelData.monitor.name === workspacesRow.screenName
             property string activeColor: "#4a9eff"
             property string inactiveColor: "#555555"
+            property string urgentColor: '#ff2222'
             width: textItem.implicitWidth + 16 * 1.5
             height: 24
             radius: 15
-            color: modelData.active ? activeColor : inactiveColor
+            color: modelData.active ? activeColor : (modelData.urgent ? urgentColor : inactiveColor)
             border.color: color
             border.width: 2
 
@@ -43,7 +44,7 @@ Row {
             MouseArea {
                 property string oldColor: ""
                 property string hoverColor: "#313131"
-                property bool isActiveWorkspace: modelData.monitor.activeWorkspace.id === modelData.id
+                property bool isActiveWorkspace: modelData.monitor !== null &&  modelData.monitor.activeWorkspace !== null && modelData.monitor.activeWorkspace.id === modelData.id
                 hoverEnabled: !isActiveWorkspace
                 anchors.fill: parent
                 onClicked: {

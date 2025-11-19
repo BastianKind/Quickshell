@@ -1,10 +1,19 @@
 import QtQuick
 import Quickshell.Services.SystemTray
 
-Repeater {
-    id: items
+Row{
+    id: root
+    anchors {
+        top: parent.top
+        bottom: parent.bottom
+    }
+    leftPadding: -8
+    spacing: 16
+    Repeater {
+        id: items
 
-    model: SystemTray.items
+        model: SystemTray.items
 
-    TrayItem {}
+        TrayItem {}
+    }
 }

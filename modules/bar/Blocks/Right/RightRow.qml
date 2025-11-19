@@ -10,7 +10,7 @@ Row {
         right: parent.right
         rightMargin: 16
     }
-    spacing: 16
+    spacing: 24
     Volume {}
     Battery {}
     Time {}

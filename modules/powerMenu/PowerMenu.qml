@@ -3,7 +3,6 @@ import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 import "./../singletons/"
-import "./icons/"
 
 PanelWindow {
     id: root
@@ -15,7 +14,7 @@ PanelWindow {
         left: true
     }
 
-    property bool isVisible: PowerMenuHandler.powerMenu && PowerMenuHandler.screenName == root.screen.name
+    property bool isVisible: false
     property bool finalVisibility: false
     visible: finalVisibility || menu.height > 0
     implicitHeight: barHeight
@@ -23,12 +22,23 @@ PanelWindow {
     exclusiveZone: barHeight
     color: "transparent"
 
-    onIsVisibleChanged: {
-        if (!isVisible) {
-            finalVisibility = (PowerMenuHandler.screenName == root.screen.name)
-            graceTimer.start()
-        } else {
-            finalVisibility = true
+    Connections {
+        target: PowerMenuHandler
+        function onPowerMenuChanged() { updateVisibility() }
+        function onScreenNameChanged() { updateVisibility() }
+    }
+
+    Component.onCompleted: updateVisibility()
+
+    function updateVisibility() {
+        var shouldBeVisible = PowerMenuHandler.powerMenu && PowerMenuHandler.screenName == root.screen.name
+        if (isVisible !== shouldBeVisible) {
+            isVisible = shouldBeVisible
+            if (!isVisible) {
+                graceTimer.start()
+            } else {
+                finalVisibility = true
+            }
         }
     }
 
@@ -38,7 +48,7 @@ PanelWindow {
         repeat: false
         interval: 500
         onTriggered: {
-            root.finalVisibility = menuMouseArea.containsMouse ? true : root.isVisible
+            root.finalVisibility = menuMouseArea.containsMouse ? true : (PowerMenuHandler.powerMenu && PowerMenuHandler.screenName == root.screen.name)
         }
     }
 
@@ -46,10 +56,10 @@ PanelWindow {
 
     // Define the menu model as a property for clarity
     property var menuModel: [
-        { icon: "./Icons/i8-shutdown.png", cmd: ["systemctl", "poweroff"] },
-        { icon: "./Icons/i8-restart.svg", cmd: ["reboot"] },
-        { icon: "./Icons/i8-sleep.png", cmd: ["systemctl", "suspend"] },
-        { icon: "./Icons/i8-lock.svg", cmd: ["hyprlock"] },
+        { icon: "\udb81\udc25", cmd: ["systemctl", "poweroff"] },
+        { icon: "\udb81\udf09", cmd: ["reboot"] },
+        { icon: "\udb81\udcb2", cmd: ["systemctl", "suspend"] },
+        { icon: "\udb80\udf41", cmd: ["hyprlock"] },
     ]
 
     Rectangle {
@@ -74,18 +84,24 @@ PanelWindow {
 
         Row {
             anchors.centerIn: parent
-            spacing: 18
+            spacing: 24
             Repeater {
                 model: root.menuModel
-                delegate: Image {
-                    source: modelData.icon
-                    height: 24
-                    width: 24
+                delegate: Text {
+                    text: modelData.icon
+                    color: "#ffffff"
+                    font {
+                        family: "JetBrainsMono Nerd Font Mono"
+                        pixelSize: 28
+                    }
                     anchors.verticalCenter: parent.verticalCenter
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
-                        onClicked: processHandler.exec(modelData.cmd)
+                        onClicked: {
+
+                            processHandler.exec(modelData.cmd)
+                        }
                     }
                 }
             }
