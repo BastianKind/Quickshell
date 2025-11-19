@@ -4,7 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.Mpris
 import Quickshell.Hyprland
-import "./../singletons/"
+import qs.modules.singletons
 
 PanelWindow {
     id: root
@@ -20,7 +20,7 @@ PanelWindow {
         right: true
     }
     visible: finalVisibility || popOut.height > 0
-    implicitHeight: popOutHeight
+    implicitHeight: content.desiredHeight
     implicitWidth: getScreenWidth() / 3
     exclusiveZone: 0
     color: "transparent"

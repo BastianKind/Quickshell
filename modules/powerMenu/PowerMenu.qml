@@ -2,7 +2,7 @@ import Quickshell
 import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
-import "./../singletons/"
+import qs.modules.singletons
 
 PanelWindow {
     id: root

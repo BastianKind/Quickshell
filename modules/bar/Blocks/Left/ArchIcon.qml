@@ -1,6 +1,6 @@
 import Quickshell
 import QtQuick
-import "../../../singletons"
+import qs.modules.singletons
 
 Rectangle {
     id: root

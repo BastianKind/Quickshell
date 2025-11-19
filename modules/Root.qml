@@ -1,8 +1,8 @@
 import QtQuick
 import Quickshell
-import "./bar/"
-import "./powerMenu/"
-import "./musicPopOut/"
+import qs.modules.bar
+import qs.modules.powerMenu
+import qs.modules.musicPopOut
 
 Variants {
     model: Quickshell.screens

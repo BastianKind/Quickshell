@@ -9,7 +9,7 @@ Rectangle {
     color: "transparent"
     property var player: Mpris.players.values[Mpris.players.values.length - 1]
     property string trackArtUrl: player ? player.trackArtUrl : ""
-    property real desiredHeight: albumArt.status === Image.Ready ? Math.max(albumArt.paintedHeight * 1.4, 200) : 200
+    property real desiredHeight: albumArt.status === Image.Ready ? Math.max(albumArt.paintedHeight + 64, 200) : 200
 
     Connections {
         target: player ?? null
@@ -32,7 +32,7 @@ Rectangle {
         Rectangle {
             id: albumArtBackground
             anchors.centerIn: parent
-            width: parent.width * 0.9
+            width: parent.width - 32
             height: albumArt.status === Image.Ready ? albumArt.paintedHeight + 32 : width
             color: "#222222"
             radius: 8
@@ -40,7 +40,7 @@ Rectangle {
             Image {
                 id: albumArt
                 anchors.centerIn: parent
-                width: parent.width * 0.9
+                width: parent.width - 32
                 fillMode: Image.PreserveAspectFit
                 cache: false
                 source: player ? player.trackArtUrl : ""

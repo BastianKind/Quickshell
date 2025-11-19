@@ -1,9 +1,9 @@
 import Quickshell
 import QtQuick
 import QtQuick.Layouts
-import "./Blocks/Right"
-import "./Blocks/Center"
-import "./Blocks/Left"
+import qs.modules.bar.Blocks.Right
+import qs.modules.bar.Blocks.Center
+import qs.modules.bar.Blocks.Left
 
 PanelWindow {
     id: root
