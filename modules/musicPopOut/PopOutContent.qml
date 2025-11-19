@@ -9,7 +9,7 @@ Rectangle {
     color: "transparent"
     property var player: Mpris.players.values[Mpris.players.values.length - 1]
     property string trackArtUrl: player ? player.trackArtUrl : ""
-    property real desiredHeight: albumArt.status === Image.Ready ? Math.max(albumArt.paintedHeight * 1.2, 200) : 200
+    property real desiredHeight: albumArt.status === Image.Ready ? Math.max(albumArt.paintedHeight * 1.4, 200) : 200
 
     Connections {
         target: player ?? null
@@ -125,7 +125,7 @@ Rectangle {
 
                     Text {
                         text: "\udb83\udf28"
-                        color: "white"
+                        color: player === undefined ? "white" : (player.canGoPrevious ? "white" : "gray")
                         anchors.verticalCenter: parent.verticalCenter
                         verticalAlignment: Text.AlignVCenter
                         font {
@@ -135,17 +135,17 @@ Rectangle {
 
                         MouseArea {
                             anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
+                            cursorShape: player === undefined ? Qt.ArrowCursor : ( player.canGoPrevious ? Qt.PointingHandCursor : Qt.ArrowCursor)
                             onClicked: {
-                                if(player){
+                                if(player && player.canGoPrevious){
                                     player.previous();
                                 }
                             }
                         }
                     }
                     Text {
-                        text: player.isPlaying ? "\udb80\udfe6" : "\udb81\udc0d"
-                        color: "white"
+                        text: player === undefined ? "" : (player.isPlaying ? "\udb80\udfe6" : "\udb81\udc0d")
+                        color: player === undefined ? "white" : (player.canTogglePlaying ? "white" : "gray")
                         anchors.verticalCenter: parent.verticalCenter
                         verticalAlignment: Text.AlignVCenter
                         font {
@@ -155,9 +155,9 @@ Rectangle {
 
                         MouseArea {
                             anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
+                            cursorShape: player === undefined ? Qt.ArrowCursor : ( player.canTogglePlaying ? Qt.PointingHandCursor : Qt.ArrowCursor)
                             onClicked: {
-                                if(player){
+                                if(player && player.canTogglePlaying){
                                     player.togglePlaying();
                                 }
                             }
@@ -165,7 +165,7 @@ Rectangle {
                     }
                     Text {
                         text: "\udb83\udf27"
-                        color: "white"
+                        color: player === undefined ? "white" : (player.canGoNext ? "white" : "gray")
                         anchors.verticalCenter: parent.verticalCenter
                         verticalAlignment: Text.AlignVCenter
                         font {
@@ -175,9 +175,9 @@ Rectangle {
 
                         MouseArea {
                             anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
+                            cursorShape: player === undefined ? Qt.ArrowCursor : ( player.canGoNext ? Qt.PointingHandCursor : Qt.ArrowCursor)
                             onClicked: {
-                                if(player){
+                                if(player && player.canGoNext){
                                     player.next();
                                 }
                             }
