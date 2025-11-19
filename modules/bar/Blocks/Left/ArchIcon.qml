@@ -8,8 +8,8 @@ Rectangle {
     anchors {
         verticalCenter: parent.verticalCenter
     }
-    height: 24
-    width: 24
+    height: parent.height
+    width: height * 0.8
     color: "transparent"
     required property string screenName
 
@@ -17,7 +17,7 @@ Rectangle {
         height: 24
         width: 24
         source: "../../icons/arch-linux-white.svg"
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.centerIn: parent
         smooth: true
     }
     MouseArea {

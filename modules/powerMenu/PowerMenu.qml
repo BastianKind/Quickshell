@@ -50,9 +50,7 @@ PanelWindow {
         repeat: false
         interval: 500
         onTriggered: {
-            if (!menuMouseArea.containsMouse) {
-                root.finalVisibility = false
-            }
+            root.finalVisibility = menuMouseArea.containsMouse ? true : (PowerMenuHandler.powerMenu && PowerMenuHandler.screenName == root.screen.name)
         }
     }
 
