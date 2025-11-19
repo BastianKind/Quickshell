@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import "./bar/"
 import "./powerMenu/"
+import "./musicPopOut/"
 
 Variants {
     model: Quickshell.screens
@@ -40,6 +41,11 @@ Variants {
         PowerMenu {
             id: powerMenu
             barHeight: root.barHeight
+            modelData: root.modelData
+        }
+        MusicPopOut {
+            id: musicPopOut
+            popOutHeight: 320
             modelData: root.modelData
         }
     }

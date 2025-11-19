@@ -29,6 +29,7 @@ PanelWindow {
 
         CenterRow {
             id: centerRow
+            screenName: root.screen.name
         }
 
         RightRow {

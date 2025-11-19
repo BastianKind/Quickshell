@@ -13,11 +13,9 @@ Singleton {
     property alias screenName: properties.screenName
     function togglePowerMenu(originScreenName, originPowerMenu) {
         if (originPowerMenu) {
-            // Opening menu - set screen name first, then enable
             properties.screenName = originScreenName
             properties.powerMenu = true
         } else {
-            // Closing menu - just disable, keep screen name
             properties.powerMenu = false
         }
     }

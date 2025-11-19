@@ -9,5 +9,8 @@ Row {
         bottom: parent.bottom
         centerIn: parent
     }
-    PlayerText{}
+    required property string screenName
+    PlayerText{
+        screenName: root.screenName
+    }
 }

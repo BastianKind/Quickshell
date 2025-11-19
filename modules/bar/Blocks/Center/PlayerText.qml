@@ -1,17 +1,17 @@
 import Quickshell
 import QtQuick
 import Quickshell.Services.Mpris
+import "../../../singletons"
 
 Row {
     id: root
+    required property string screenName
     function getText(player){
         if(player === null || player === undefined){
             return ""
         }
-        console.log(player.trackArtUrl)
         return player.trackTitle + " ~ " + player.trackArtist
     }
-
     Text {
         id: playerText
         property var player: Mpris.players.values[Mpris.players.values.length - 1]
@@ -24,8 +24,10 @@ Row {
 
         MouseArea {
             property var player: Mpris.players.values[Mpris.players.values.length - 1]
+            acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
+            hoverEnabled: true
             onClicked: event => {
                 if (event.button === Qt.LeftButton) {
                     player.togglePlaying();
@@ -35,7 +37,12 @@ Row {
                     player.previous();
                 }
             }
-            acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
+            onEntered: {
+                MusicPopOutHandler.toggleMusicPopOut(root.screenName, true)
+            }
+            onExited: {
+                MusicPopOutHandler.toggleMusicPopOut(root.screenName, false)
+            }
         }
     }
 }
