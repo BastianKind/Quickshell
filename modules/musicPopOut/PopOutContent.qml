@@ -89,6 +89,8 @@ Rectangle {
                         text: player ? player.trackTitle : ""
                         horizontalAlignment: Text.AlignHCenter
                         wrapMode: Text.WordWrap
+                        maximumLineCount: 2
+                        elide: Text.ElideRight
                         font {
                             family: "JetBrainsMono Nerd Font Mono"
                             pixelSize: 22
@@ -121,7 +123,7 @@ Rectangle {
                 Row {
                     id: controlRow
                     anchors.centerIn: parent
-                    spacing: 20
+                    spacing: parent.width / 8
 
                     Text {
                         text: "\udb83\udf28"
