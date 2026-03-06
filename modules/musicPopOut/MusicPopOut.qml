@@ -10,39 +10,52 @@ PanelWindow {
     id: root
     required property int popOutHeight
     property var modelData
-    property bool isVisible: false
-    property bool finalVisibility: false
 
     screen: modelData
     anchors {
         top: true
     }
-    visible: finalVisibility || popOut.height > 0
-    implicitHeight: content.desiredHeight
+
+    function startGraceTimer() {
+        graceTimer.start()
+    }
+    
+    property bool shouldBeVisible: {
+        FoldOutManager.changeCounter
+        return FoldOutManager.isOpen("musicpopout") && 
+               FoldOutManager.getScreenName("musicpopout") === root.screen.name
+    }
+    
+    property real targetHeight: 0
+    
+    onShouldBeVisibleChanged: {
+        if (shouldBeVisible) {
+            // Defer height calculation to next frame
+            Qt.callLater(updateHeight)
+        }
+    }
+    
+    function updateHeight() {
+        targetHeight = content.desiredHeight
+    }
+    
+    visible: shouldBeVisible || popOut.height > 0 
+    implicitHeight: shouldBeVisible ? targetHeight : 0
     implicitWidth: getScreenWidth() / 3
     exclusiveZone: 0
     color: "transparent"
     
-    Connections {
-        target: MusicPopOutHandler
-        function onShowMusicPopOutChanged() { updateVisibility() }
-        function onScreenNameChanged() { updateVisibility() }
+    // Animate the window height
+    Behavior on implicitHeight {
+        NumberAnimation { 
+            id: heightAnimation
+            duration: 100
+            easing.type: Easing.OutCubic
+        }
     }
 
-    Process { id: processHandler }
-
-    Component.onCompleted: updateVisibility()
-
-    function updateVisibility() {
-        var shouldBeVisible = MusicPopOutHandler.showMusicPopOut && MusicPopOutHandler.screenName == root.screen.name
-        if (isVisible !== shouldBeVisible) {
-            isVisible = shouldBeVisible
-            if (!isVisible) {
-                graceTimer.start()
-            } else {
-                finalVisibility = true
-            }
-        }
+    Component.onCompleted: {
+        FoldOutManager.registerFoldout("musicpopout")
     }
 
     function getScreenWidth() {
@@ -61,37 +74,48 @@ PanelWindow {
         repeat: false
         interval: 500
         onTriggered: {
-            root.finalVisibility = menuMouseArea.containsMouse ? true : (MusicPopOutHandler.showMusicPopOut && MusicPopOutHandler.screenName == root.screen.name)
+            if (!menuMouseArea.containsMouse) {
+                FoldOutManager.toggle("musicpopout", root.screen.name, false)
+            }
         }
     }
 
     Rectangle{
         id: popOut
-        y: 0
-        x: 0
+        anchors.fill: parent
         clip: true
         color: "#1a1a1a"
-        implicitHeight: root.finalVisibility ? content.desiredHeight : 0
-        implicitWidth: getScreenWidth() / 3
         bottomRightRadius: 16
         bottomLeftRadius: 16
-
-        Behavior on height {
-            NumberAnimation { duration: 250; easing.type: Easing.InOutCirc }
-        }
 
         MouseArea {
             id: menuMouseArea
             anchors.fill: parent
             hoverEnabled: true
             onEntered: {
-                graceTimer.restart()
                 graceTimer.stop()
+                FoldOutManager.toggle("musicpopout", root.screen.name, true)
             }
-            onExited: graceTimer.start()
+            onExited: {
+                graceTimer.start()
+            }
         }
+        
         PopOutContent{
             id: content
+            anchors.top: parent.top
+            opacity: root.shouldBeVisible ? 1.0 : 0.0
+            visible: root.shouldBeVisible
+        
+            Behavior on opacity {
+                NumberAnimation { duration: 150; easing.type: Easing.OutCubic; }
+            }
+
+            onDesiredHeightChanged: {
+                if (root.shouldBeVisible) {
+                    root.targetHeight = desiredHeight
+                }
+            }
         }
     }
 }

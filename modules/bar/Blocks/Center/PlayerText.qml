@@ -1,7 +1,8 @@
 import Quickshell
 import QtQuick
 import Quickshell.Services.Mpris
-import "../../../singletons"
+import qs.modules.singletons
+import qs.modules.musicPopOut
 
 Row {
     id: root
@@ -38,10 +39,10 @@ Row {
                 }
             }
             onEntered: {
-                MusicPopOutHandler.toggleMusicPopOut(root.screenName, true)
+                FoldOutManager.toggle("musicpopout", root.screenName, true)
             }
             onExited: {
-                MusicPopOutHandler.toggleMusicPopOut(root.screenName, false)
+                musicPopOut.startGraceTimer()
             }
         }
     }

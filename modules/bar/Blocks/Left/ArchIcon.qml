@@ -1,6 +1,7 @@
 import Quickshell
 import QtQuick
 import qs.modules.singletons
+import qs.modules.powerMenu
 
 Rectangle {
     id: root
@@ -19,16 +20,16 @@ Rectangle {
         source: "../../icons/arch-linux-white.svg"
         anchors.centerIn: parent
         smooth: true
-    }
+    }    
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         onClicked: {
-            PowerMenuHandler.togglePowerMenu(root.screenName, true)
+            FoldOutManager.toggle("powermenu", root.screenName, true)
         }
         onExited: {
-            PowerMenuHandler.togglePowerMenu(root.screenName, false)
+            powerMenu.startTimer()
         }
     }
 }
