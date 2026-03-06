@@ -36,7 +36,7 @@ Rectangle {
             height: albumArt.status === Image.Ready ? albumArt.paintedHeight + 32 : width
             color: "#222222"
             radius: 8
-
+            
             Image {
                 id: albumArt
                 anchors.centerIn: parent
@@ -103,9 +103,11 @@ Rectangle {
                         text: player ? player.trackArtist : ""
                         horizontalAlignment: Text.AlignHCenter
                         wrapMode: Text.WordWrap
+                        maximumLineCount: 1
+                        elide: Text.ElideRight
                         font {
                             family: "JetBrainsMono Nerd Font Mono"
-                            pixelSize: 14
+                            pixelSize: 16
                         }
                     }
                 }

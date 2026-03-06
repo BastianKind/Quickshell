@@ -16,8 +16,6 @@ PanelWindow {
     screen: modelData
     anchors {
         top: true
-        left: true
-        right: true
     }
     visible: finalVisibility || popOut.height > 0
     implicitHeight: content.desiredHeight
@@ -70,11 +68,11 @@ PanelWindow {
     Rectangle{
         id: popOut
         y: 0
-        x: getScreenWidth() / 3
+        x: 0
         clip: true
         color: "#1a1a1a"
-        height: root.finalVisibility ? content.desiredHeight : 0
-        width: getScreenWidth() / 3
+        implicitHeight: root.finalVisibility ? content.desiredHeight : 0
+        implicitWidth: getScreenWidth() / 3
         bottomRightRadius: 16
         bottomLeftRadius: 16
 

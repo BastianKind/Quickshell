@@ -23,7 +23,8 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
-        onEntered: {
+        cursorShape: Qt.PointingHandCursor
+        onClicked: {
             PowerMenuHandler.togglePowerMenu(root.screenName, true)
         }
         onExited: {

@@ -101,7 +101,6 @@ PanelWindow {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
-
                             processHandler.exec(modelData.cmd)
                         }
                     }
