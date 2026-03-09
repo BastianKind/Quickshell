@@ -5,6 +5,7 @@ import QtQuick.Layouts
 import Quickshell.Services.Mpris
 import Quickshell.Hyprland
 import qs.modules.singletons
+import qs.modules.bar.Blocks.Center
 
 PanelWindow {
     id: root
@@ -17,37 +18,36 @@ PanelWindow {
     }
 
     function startGraceTimer() {
-        graceTimer.start()
+        graceTimer.start();
     }
-    
+
     property bool shouldBeVisible: {
-        FoldOutManager.changeCounter
-        return FoldOutManager.isOpen("musicpopout") && 
-               FoldOutManager.getScreenName("musicpopout") === root.screen.name
+        FoldOutManager.changeCounter;
+        return FoldOutManager.isOpen("musicpopout") && FoldOutManager.getScreenName("musicpopout") === root.screen.name;
     }
-    
+
     property real targetHeight: 0
-    
+
     onShouldBeVisibleChanged: {
         if (shouldBeVisible) {
             // Defer height calculation to next frame
-            Qt.callLater(updateHeight)
+            Qt.callLater(updateHeight);
         }
     }
-    
+
     function updateHeight() {
-        targetHeight = content.desiredHeight
+        targetHeight = content.desiredHeight;
     }
-    
-    visible: shouldBeVisible || popOut.height > 0 
+
+    visible: shouldBeVisible || popOut.height > 0
     implicitHeight: shouldBeVisible ? targetHeight : 0
     implicitWidth: getScreenWidth() / 3
     exclusiveZone: 0
     color: "transparent"
-    
+
     // Animate the window height
     Behavior on implicitHeight {
-        NumberAnimation { 
+        NumberAnimation {
             id: heightAnimation
             duration: 100
             easing.type: Easing.OutCubic
@@ -55,7 +55,7 @@ PanelWindow {
     }
 
     Component.onCompleted: {
-        FoldOutManager.registerFoldout("musicpopout")
+        FoldOutManager.registerFoldout("musicpopout");
     }
 
     function getScreenWidth() {
@@ -74,13 +74,14 @@ PanelWindow {
         repeat: false
         interval: 500
         onTriggered: {
-            if (!menuMouseArea.containsMouse) {
-                FoldOutManager.toggle("musicpopout", root.screen.name, false)
+            var triggerHovered = FoldOutManager.isTriggerHovered("musicpopout", root.screen.name);
+            if (!menuMouseArea.containsMouse && !triggerHovered) {
+                FoldOutManager.toggle("musicpopout", root.screen.name, false);
             }
         }
     }
 
-    Rectangle{
+    Rectangle {
         id: popOut
         anchors.fill: parent
         clip: true
@@ -93,27 +94,30 @@ PanelWindow {
             anchors.fill: parent
             hoverEnabled: true
             onEntered: {
-                graceTimer.stop()
-                FoldOutManager.toggle("musicpopout", root.screen.name, true)
+                graceTimer.stop();
+                FoldOutManager.toggle("musicpopout", root.screen.name, true);
             }
             onExited: {
-                graceTimer.start()
+                graceTimer.start();
             }
         }
-        
-        PopOutContent{
+
+        PopOutContent {
             id: content
             anchors.top: parent.top
             opacity: root.shouldBeVisible ? 1.0 : 0.0
             visible: root.shouldBeVisible
-        
+
             Behavior on opacity {
-                NumberAnimation { duration: 150; easing.type: Easing.OutCubic; }
+                NumberAnimation {
+                    duration: 150
+                    easing.type: Easing.OutCubic
+                }
             }
 
             onDesiredHeightChanged: {
                 if (root.shouldBeVisible) {
-                    root.targetHeight = desiredHeight
+                    root.targetHeight = desiredHeight;
                 }
             }
         }

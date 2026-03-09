@@ -20,16 +20,20 @@ Rectangle {
         source: "../../icons/arch-linux-white.svg"
         anchors.centerIn: parent
         smooth: true
-    }    
+    }
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
+        onEntered: {
+            FoldOutManager.setTriggerHovered("powermenu", root.screenName, true);
+        }
         onClicked: {
-            FoldOutManager.toggle("powermenu", root.screenName, true)
+            FoldOutManager.toggle("powermenu", root.screenName, true);
         }
         onExited: {
-            powerMenu.startTimer()
+            FoldOutManager.setTriggerHovered("powermenu", root.screenName, false);
+            powerMenu.startTimer();
         }
     }
 }

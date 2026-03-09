@@ -10,6 +10,9 @@
 *.dll
 *.dylib
 
+# qml .qmlls.ini file
+.qmlls.ini
+
 # Qt-es
 object_script.*.Release
 object_script.*.Debug

@@ -7,16 +7,19 @@ import qs.modules.musicPopOut
 Row {
     id: root
     required property string screenName
-    function getText(player){
-        if(player === null || player === undefined){
-            return ""
+
+    function getText(player) {
+        if (player === null || player === undefined || player.playbackState == undefined) {
+            return null;
         }
-        return player.trackTitle + " ~ " + player.trackArtist
+        let text = player.trackTitle + " ~ " + player.trackArtist;
+        return text;
     }
+    visible: Mpris.players.values.length > 0
     Text {
         id: playerText
-        property var player: Mpris.players.values[Mpris.players.values.length - 1]
-        text: getText(player) ?? ""
+        property var player: Mpris.players.values[Mpris.players.values.length - 1] ?? null
+        text: root.getText(player) ?? ""
         color: "white"
         font.pixelSize: 16
         font.family: "JetBrainsMono Nerd Font Mono"
@@ -24,7 +27,8 @@ Row {
         verticalAlignment: Text.AlignVCenter
 
         MouseArea {
-            property var player: Mpris.players.values[Mpris.players.values.length - 1]
+            id: mouseArea
+            property var player: playerText.player
             acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
@@ -39,10 +43,12 @@ Row {
                 }
             }
             onEntered: {
-                FoldOutManager.toggle("musicpopout", root.screenName, true)
+                FoldOutManager.setTriggerHovered("musicpopout", root.screenName, true);
+                FoldOutManager.toggle("musicpopout", root.screenName, true);
             }
             onExited: {
-                musicPopOut.startGraceTimer()
+                FoldOutManager.setTriggerHovered("musicpopout", root.screenName, false);
+                musicPopOut.startGraceTimer();
             }
         }
     }

@@ -15,14 +15,13 @@ PanelWindow {
     }
 
     function startTimer() {
-        graceTimer.start()
+        graceTimer.start();
     }
 
     property bool shouldBeVisible: {
-        return FoldOutManager.isOpen("powermenu") && 
-               FoldOutManager.getScreenName("powermenu") === root.screen.name
+        return FoldOutManager.isOpen("powermenu") && FoldOutManager.getScreenName("powermenu") === root.screen.name;
     }
-    
+
     visible: shouldBeVisible
     implicitHeight: barHeight
     implicitWidth: 24 * 8
@@ -30,16 +29,30 @@ PanelWindow {
     color: "transparent"
 
     Component.onCompleted: {
-        FoldOutManager.registerFoldout("powermenu")
+        FoldOutManager.registerFoldout("powermenu");
     }
 
-    Process { id: processHandler }
+    Process {
+        id: processHandler
+    }
 
     property var menuModel: [
-        { icon: "\udb81\udc25", cmd: ["systemctl", "poweroff"] },
-        { icon: "\udb81\udf09", cmd: ["reboot"] },
-        { icon: "\udb81\udcb2", cmd: ["systemctl", "suspend"] },
-        { icon: "\udb80\udf41", cmd: ["hyprlock"] },
+        {
+            icon: "\udb81\udc25",
+            cmd: ["systemctl", "poweroff"]
+        },
+        {
+            icon: "\udb81\udf09",
+            cmd: ["reboot"]
+        },
+        {
+            icon: "\udb81\udcb2",
+            cmd: ["systemctl", "suspend"]
+        },
+        {
+            icon: "\udb80\udf41",
+            cmd: ["hyprlock"]
+        },
     ]
 
     Rectangle {
@@ -52,15 +65,19 @@ PanelWindow {
         bottomRightRadius: 16
 
         Behavior on height {
-            NumberAnimation { duration: 250; easing.type: Easing.InOutCirc }
+            NumberAnimation {
+                duration: 250
+                easing.type: Easing.InOutCirc
+            }
         }
-        
+
         Timer {
             id: graceTimer
             interval: 500
             onTriggered: {
-                if (!menuMouseArea.containsMouse) {
-                    FoldOutManager.toggle("powermenu", root.screen.name, false)
+                var triggerHovered = FoldOutManager.isTriggerHovered("powermenu", root.screen.name);
+                if (!menuMouseArea.containsMouse && !triggerHovered) {
+                    FoldOutManager.toggle("powermenu", root.screen.name, false);
                 }
             }
         }
@@ -70,10 +87,10 @@ PanelWindow {
             anchors.fill: parent
             hoverEnabled: true
             onEntered: {
-                FoldOutManager.toggle("powermenu", root.screen.name, true)
+                FoldOutManager.toggle("powermenu", root.screen.name, true);
             }
             onExited: {
-                graceTimer.start()
+                graceTimer.start();
             }
         }
 
@@ -94,8 +111,8 @@ PanelWindow {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
-                            processHandler.exec(modelData.cmd)
-                            FoldOutManager.toggle("powermenu", root.screen.name, false)
+                            processHandler.exec(modelData.cmd);
+                            FoldOutManager.toggle("powermenu", root.screen.name, false);
                         }
                     }
                 }

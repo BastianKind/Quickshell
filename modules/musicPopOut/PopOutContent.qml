@@ -8,14 +8,16 @@ Rectangle {
     anchors.fill: parent
     color: "transparent"
     property var player: Mpris.players.values[Mpris.players.values.length - 1]
-    property string trackArtUrl: player ? player.trackArtUrl : ""
-    property real desiredHeight: albumArt.status === Image.Ready ? Math.max(albumArt.paintedHeight + 64, 200) : 200
+    property string trackArtUrl: player ? player.trackArtUrl : null
+    property bool hasValidArt: trackArtUrl != "" && trackArtUrl != null && !trackArtUrl.toString().endsWith("AlbumCoverPlaceholder.svg") && albumArt.status === Image.Ready
+    property real contentHeight: hasValidArt && albumArt.paintedHeight > 0 ? albumArt.paintedHeight + 32 : Math.min(albumArtBackground.width, 400) + 32
+    property real desiredHeight: contentHeight + 32
 
     Connections {
-        target: player ?? null
+        target: root.player ?? null
         function onTrackArtUrlChanged() {
-            albumArt.source = ""
-            albumArt.source = player.trackArtUrl
+            root.trackArtUrl = "";
+            root.trackArtUrl = root.player.trackArtUrl;
         }
     }
 
@@ -33,17 +35,18 @@ Rectangle {
             id: albumArtBackground
             anchors.centerIn: parent
             width: parent.width - 32
-            height: albumArt.status === Image.Ready ? albumArt.paintedHeight + 32 : width
+            height: root.contentHeight
             color: "#222222"
             radius: 8
-            
+
             Image {
                 id: albumArt
                 anchors.centerIn: parent
                 width: parent.width - 32
                 fillMode: Image.PreserveAspectFit
                 cache: false
-                source: player ? player.trackArtUrl : ""
+                source: root.trackArtUrl && root.trackArtUrl != "" ? root.trackArtUrl : "../bar/icons/AlbumCoverPlaceholder.svg"
+                sourceSize: Qt.size(512, 512)
             }
         }
     }
@@ -60,12 +63,12 @@ Rectangle {
         Rectangle {
             id: spacerArea
             width: parent.width * 0.9
-            height: albumArt.status === Image.Ready ? albumArt.paintedHeight + 32 : width
+            height: root.contentHeight
             anchors.centerIn: parent
             color: "#222222"
             radius: 8
 
-            Rectangle{
+            Rectangle {
                 id: spacerTop
                 height: parent.height / 5 * 3
                 color: "transparent"
@@ -86,7 +89,7 @@ Rectangle {
                         anchors.horizontalCenter: parent.horizontalCenter
                         color: "white"
                         width: parent.width
-                        text: player ? player.trackTitle : ""
+                        text: root.player ? root.player.trackTitle : "unknown title"
                         horizontalAlignment: Text.AlignHCenter
                         wrapMode: Text.WordWrap
                         maximumLineCount: 2
@@ -100,7 +103,7 @@ Rectangle {
                         id: infoText2
                         anchors.horizontalCenter: parent.horizontalCenter
                         color: "white"
-                        text: player ? player.trackArtist : ""
+                        text: root.player ? root.player.trackArtist : "unknown artist"
                         horizontalAlignment: Text.AlignHCenter
                         wrapMode: Text.WordWrap
                         maximumLineCount: 1
@@ -112,7 +115,7 @@ Rectangle {
                     }
                 }
             }
-            Rectangle{
+            Rectangle {
                 id: spacerBottom
                 height: parent.height / 5 * 2
                 width: parent.width * 0.9
@@ -127,9 +130,10 @@ Rectangle {
                     anchors.centerIn: parent
                     spacing: parent.width / 8
 
+                    // Previous button
                     Text {
                         text: "\udb83\udf28"
-                        color: player === undefined ? "white" : (player.canGoPrevious ? "white" : "gray")
+                        color: root.player === undefined ? "white" : (root.player.canGoPrevious ? "white" : "gray")
                         anchors.verticalCenter: parent.verticalCenter
                         verticalAlignment: Text.AlignVCenter
                         font {
@@ -139,17 +143,18 @@ Rectangle {
 
                         MouseArea {
                             anchors.fill: parent
-                            cursorShape: player === undefined ? Qt.ArrowCursor : ( player.canGoPrevious ? Qt.PointingHandCursor : Qt.ArrowCursor)
+                            cursorShape: root.player === undefined ? Qt.ArrowCursor : (root.player.canGoPrevious ? Qt.PointingHandCursor : Qt.ArrowCursor)
                             onClicked: {
-                                if(player && player.canGoPrevious){
-                                    player.previous();
+                                if (root.player && root.player.canGoPrevious) {
+                                    root.player.previous();
                                 }
                             }
                         }
                     }
+                    // Play/pause button
                     Text {
-                        text: player === undefined ? "" : (player.isPlaying ? "\udb80\udfe6" : "\udb81\udc0d")
-                        color: player === undefined ? "white" : (player.canTogglePlaying ? "white" : "gray")
+                        text: root.player === undefined ? "\udb81\udc0d" : (root.player.isPlaying ? "\udb80\udfe6" : "\udb81\udc0d")
+                        color: root.player === undefined ? "white" : (root.player.canTogglePlaying ? "white" : "gray")
                         anchors.verticalCenter: parent.verticalCenter
                         verticalAlignment: Text.AlignVCenter
                         font {
@@ -159,17 +164,18 @@ Rectangle {
 
                         MouseArea {
                             anchors.fill: parent
-                            cursorShape: player === undefined ? Qt.ArrowCursor : ( player.canTogglePlaying ? Qt.PointingHandCursor : Qt.ArrowCursor)
+                            cursorShape: root.player === undefined ? Qt.ArrowCursor : (root.player.canTogglePlaying ? Qt.PointingHandCursor : Qt.ArrowCursor)
                             onClicked: {
-                                if(player && player.canTogglePlaying){
-                                    player.togglePlaying();
+                                if (root.player && root.player.canTogglePlaying) {
+                                    root.player.togglePlaying();
                                 }
                             }
                         }
                     }
+                    // Next button
                     Text {
                         text: "\udb83\udf27"
-                        color: player === undefined ? "white" : (player.canGoNext ? "white" : "gray")
+                        color: root.player === undefined ? "white" : (root.player.canGoNext ? "white" : "gray")
                         anchors.verticalCenter: parent.verticalCenter
                         verticalAlignment: Text.AlignVCenter
                         font {
@@ -179,10 +185,10 @@ Rectangle {
 
                         MouseArea {
                             anchors.fill: parent
-                            cursorShape: player === undefined ? Qt.ArrowCursor : ( player.canGoNext ? Qt.PointingHandCursor : Qt.ArrowCursor)
+                            cursorShape: root.player === undefined ? Qt.ArrowCursor : (root.player.canGoNext ? Qt.PointingHandCursor : Qt.ArrowCursor)
                             onClicked: {
-                                if(player && player.canGoNext){
-                                    player.next();
+                                if (root.player && root.player.canGoNext) {
+                                    root.player.next();
                                 }
                             }
                         }
