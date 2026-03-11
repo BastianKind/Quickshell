@@ -7,12 +7,15 @@ import qs.modules.musicPopOut
 Row {
     id: root
     required property string screenName
+    function limitLength(text,length){
+        return ((text.length>length)?text.slice(0,length)+"...":text)
+    }
 
     function getText(player) {
         if (player === null || player === undefined || player.playbackState == undefined) {
             return null;
         }
-        let text = player.trackTitle + " ~ " + player.trackArtist;
+        let text = limitLength(player.trackTitle,50)+ " ~ " + limitLength(player.trackArtist,50);
         return text;
     }
     visible: Mpris.players.values.length > 0
