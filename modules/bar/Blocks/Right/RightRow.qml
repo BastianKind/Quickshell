@@ -4,15 +4,18 @@ import Quickshell.Services.SystemTray
 
 Row {
     id: root
+    required property var rootWindow
     anchors {
         top: parent.top
         bottom: parent.bottom
         right: parent.right
-        rightMargin: 16
     }
-    spacing: 24
+    spacing: 16
     Volume {}
     Battery {}
     Time {}
-    Tray {}
+    Tray {
+        id: tray
+        rootWindow: root.rootWindow
+    }
 }

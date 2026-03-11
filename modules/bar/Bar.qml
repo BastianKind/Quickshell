@@ -8,6 +8,7 @@ import qs.modules.bar.Blocks.Left
 PanelWindow {
     id: root
     required property int barHeight
+    required property var rootWindow
     property var modelData
     screen: modelData
     anchors {
@@ -19,7 +20,7 @@ PanelWindow {
     exclusiveZone: barHeight
     color: "transparent"
     Rectangle {
-        implicitHeight: root.barHeight 
+        implicitHeight: root.barHeight
         anchors.fill: parent
         color: "#1a1a1a"
         LeftRow {
@@ -34,6 +35,7 @@ PanelWindow {
 
         RightRow {
             id: rightRow
+            rootWindow: root.rootWindow
         }
     }
 }

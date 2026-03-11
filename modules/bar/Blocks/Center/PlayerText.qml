@@ -7,15 +7,17 @@ import qs.modules.musicPopOut
 Row {
     id: root
     required property string screenName
-    function limitLength(text,length){
-        return ((text.length>length)?text.slice(0,length)+"...":text)
+    function limitLength(text, length) {
+        return ((text.length > length) ? text.slice(0, length) + "..." : text);
     }
 
     function getText(player) {
         if (player === null || player === undefined || player.playbackState == undefined) {
             return null;
         }
-        let text = limitLength(player.trackTitle,50)+ " ~ " + limitLength(player.trackArtist,50);
+        var trackTitle = player.trackTitle ?? "Unknown Title";
+        var trackArtist = player.trackArtist ?? "Unknown Artist";
+        let text = limitLength(trackTitle == "" ? "Unknown Title" : trackTitle, 50) + limitLength(trackArtist == "" ? " ~ Unknown Artist" : trackArtist, 50);
         return text;
     }
     visible: Mpris.players.values.length > 0

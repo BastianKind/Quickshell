@@ -10,11 +10,12 @@ Rectangle {
         verticalCenter: parent.verticalCenter
     }
     height: parent.height
-    width: height * 0.8
-    color: "transparent"
+    width: icon.width
+    color: "Transparent"
     required property string screenName
 
     Image {
+        id: icon
         height: 24
         width: 24
         source: "../../icons/arch-linux-white.svg"
@@ -23,6 +24,8 @@ Rectangle {
     }
     MouseArea {
         anchors.fill: parent
+        anchors.leftMargin: -16
+        anchors.rightMargin: -16
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         onEntered: {

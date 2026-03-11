@@ -10,7 +10,7 @@ Rectangle {
     property var player: Mpris.players.values[Mpris.players.values.length - 1]
     property string trackArtUrl: player ? player.trackArtUrl : null
     property bool hasValidArt: trackArtUrl != "" && trackArtUrl != null && !trackArtUrl.toString().endsWith("AlbumCoverPlaceholder.svg") && albumArt.status === Image.Ready
-    property real contentHeight: hasValidArt && albumArt.paintedHeight > 0 ? albumArt.paintedHeight + 32 : Math.min(albumArtBackground.width, 400) + 32
+    property real contentHeight: hasValidArt && albumArt.paintedHeight > 0 ? albumArt.paintedHeight + 32 : Math.min(albumArtBackground.width, 320) + 32
     property real desiredHeight: contentHeight + 32
 
     Connections {
@@ -46,7 +46,7 @@ Rectangle {
                 fillMode: Image.PreserveAspectFit
                 cache: false
                 source: root.trackArtUrl && root.trackArtUrl != "" ? root.trackArtUrl : "../bar/icons/AlbumCoverPlaceholder.svg"
-                sourceSize: Qt.size(512, 512)
+                sourceSize: Qt.size(320, 320)
             }
         }
     }
@@ -89,21 +89,21 @@ Rectangle {
                         anchors.horizontalCenter: parent.horizontalCenter
                         color: "white"
                         width: parent.width
-                        text: root.player ? root.player.trackTitle : "unknown title"
+                        text: root.player ? (root.player.trackTitle == "" ? "Unknown Title" : root.player.trackTitle) : "Player unavailable"
                         horizontalAlignment: Text.AlignHCenter
                         wrapMode: Text.WordWrap
                         maximumLineCount: 2
                         elide: Text.ElideRight
                         font {
                             family: "JetBrainsMono Nerd Font Mono"
-                            pixelSize: 22
+                            pixelSize: 20
                         }
                     }
                     Text {
                         id: infoText2
                         anchors.horizontalCenter: parent.horizontalCenter
                         color: "white"
-                        text: root.player ? root.player.trackArtist : "unknown artist"
+                        text: root.player ? (root.player.trackArtist == "" ? "Unknown Artist" : root.player.trackArtist) : "unknown artist"
                         horizontalAlignment: Text.AlignHCenter
                         wrapMode: Text.WordWrap
                         maximumLineCount: 1
@@ -159,7 +159,7 @@ Rectangle {
                         verticalAlignment: Text.AlignVCenter
                         font {
                             family: "JetBrainsMono Nerd Font Mono"
-                            pixelSize: 64
+                            pixelSize: 80
                         }
 
                         MouseArea {

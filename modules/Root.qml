@@ -37,6 +37,7 @@ Variants {
             id: bar
             barHeight: root.barHeight
             modelData: root.modelData
+            rootWindow: root
         }
         PowerMenu {
             id: powerMenu

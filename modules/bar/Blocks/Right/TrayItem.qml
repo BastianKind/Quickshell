@@ -3,28 +3,43 @@ pragma ComponentBehavior: Bound
 import Quickshell.Services.SystemTray
 import QtQuick
 import Quickshell.Widgets
+import Quickshell
 
 MouseArea {
     id: root
 
     required property SystemTrayItem modelData
+    required property var rootWindow
 
-    acceptedButtons: Qt.LeftButton | Qt.RightButton
-    implicitWidth: 20
-    implicitHeight: 20
-    anchors.verticalCenter: parent.verticalCenter
+    implicitWidth: height
+
+    acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
+
+    anchors {
+        top: parent.top
+        bottom: parent.bottom
+    }
     cursorShape: Qt.PointingHandCursor
 
     onClicked: event => {
-        if (event.button === Qt.LeftButton)
+        const menu = modelData;
+        if (event.button === Qt.LeftButton && !menu.onlyMenu)
             modelData.activate();
-        else
+        else if (event.button === Qt.MiddleButton)
             modelData.secondaryActivate();
+        else {
+            if (menu.hasMenu) {
+                var pos = root.mapToGlobal(Qt.point(event.x, event.y));
+                menu.display(rootWindow, pos.x + (event.x * 2), 0);
+            }
+        }
     }
 
     IconImage {
         id: icon
-        anchors.fill: parent
+        implicitWidth: 20
+        implicitHeight: 20
+        anchors.verticalCenter: parent.verticalCenter
         source: {
             let icon = root.modelData.icon;
             if (icon.includes("?path=")) {
@@ -33,28 +48,16 @@ MouseArea {
             }
             return icon;
         }
-
-        // layer.enabled: Config.bar.tray.recolour
         colour: "#ff0000"
         required property color colour
         property color dominantColour
-
         asynchronous: true
-
         layer.enabled: true
-        // layer.effect: Colouriser {
-        //     sourceColor: root.dominantColour
-        //     colorizationColor: root.colour
-        // }
 
-        // layer.onEnabledChanged: {
-        //     if (layer.enabled && status === Image.Ready)
-        //         CUtils.getDominantColour(this, c => dominantColour = c);
-        // }
-
-        // onStatusChanged: {
-        //     if (layer.enabled && status === Image.Ready)
-        //         CUtils.getDominantColour(this, c => dominantColour = c);
-        // }
+        Rectangle {
+            anchors.fill: parent
+            color: icon.dominantColour
+            opacity: 0
+        }
     }
 }

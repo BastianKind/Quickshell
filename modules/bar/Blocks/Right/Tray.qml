@@ -1,19 +1,22 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell.Services.SystemTray
 
-Row{
+Row {
     id: root
+    required property var rootWindow
+
     anchors {
         top: parent.top
         bottom: parent.bottom
     }
-    leftPadding: -8
-    spacing: 16
     Repeater {
         id: items
 
         model: SystemTray.items
 
-        TrayItem {}
+        TrayItem {
+            rootWindow: root.rootWindow
+        }
     }
 }
