@@ -17,7 +17,7 @@ Row {
         }
         var trackTitle = player.trackTitle ?? "Unknown Title";
         var trackArtist = player.trackArtist ?? "Unknown Artist";
-        let text = limitLength(trackTitle == "" ? "Unknown Title" : trackTitle, 50) + limitLength(trackArtist == "" ? " ~ Unknown Artist" : trackArtist, 50);
+        let text = limitLength(trackTitle == "" ? "Unknown Title" : trackTitle, 50) + limitLength(trackArtist == "" ? " ~ Unknown Artist" : " ~ " + trackArtist, 50);
         return text;
     }
     visible: Mpris.players.values.length > 0
