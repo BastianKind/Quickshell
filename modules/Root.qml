@@ -3,6 +3,7 @@ import Quickshell
 import qs.modules.bar
 import qs.modules.powerMenu
 import qs.modules.musicPopOut
+import qs.modules.wallpaper
 
 Variants {
     model: Quickshell.screens
@@ -47,6 +48,10 @@ Variants {
         MusicPopOut {
             id: musicPopOut
             popOutHeight: 320
+            modelData: root.modelData
+        }
+        Wallpaper {
+            id: wallpaper
             modelData: root.modelData
         }
     }
