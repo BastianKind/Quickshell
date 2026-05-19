@@ -49,7 +49,7 @@ Row {
                 anchors.fill: parent
                 onClicked: {
                     if (!isActiveWorkspace) {
-                        Hyprland.dispatch("workspace " + modelData.id);
+                        Hyprland.dispatch("hl.dsp.focus({workspace= " + modelData.id + "})");
                         oldColor = parent.inactiveColor;
                         parent.color = parent.activeColor;
                         enabled = isActiveWorkspace;
