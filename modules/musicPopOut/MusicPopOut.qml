@@ -23,7 +23,7 @@ PanelWindow {
 
     property bool shouldBeVisible: {
         FoldOutManager.changeCounter;
-        return FoldOutManager.isOpen("musicpopout") && FoldOutManager.getScreenName("musicpopout") === root.screen.name;
+        return FoldOutManager.isOpen("musicpopout") && FoldOutManager.getScreenName("musicpopout") === root.screen.name && Mpris.players.values.length > 0;
     }
 
     property real targetHeight: 0

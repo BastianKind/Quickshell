@@ -20,7 +20,7 @@ Row {
         let text = limitLength(trackTitle == "" ? "Unknown Title" : trackTitle, 50) + limitLength(trackArtist == "" ? " ~ Unknown Artist" : " ~ " + trackArtist, 50);
         return text;
     }
-    visible: Mpris.players.values.length > 0
+    visible: Mpris.players.values.length > 0 && getText(Mpris.players.values[Mpris.players.values.length - 1]) != "Unknown Title ~ Unknown Artist"
     Text {
         id: playerText
         property var player: Mpris.players.values[Mpris.players.values.length - 1] ?? null
