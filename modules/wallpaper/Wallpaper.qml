@@ -21,7 +21,7 @@ PanelWindow {
         ? Qt.url(customWallpaperPath)
         : defaultPath
 
-    readonly property bool isGif: activePath.toString().endsWith(".gif")
+    readonly property bool isGif: activePath.toString().endsWith(".gif") || activePath.toString().endsWith(".webp")
 
     anchors { top: true; bottom: true; left: true; right: true }
     WlrLayershell.layer: WlrLayer.Background
@@ -33,7 +33,7 @@ PanelWindow {
 
         function expandPath(path: string): string {
             if (path.startsWith("~/")) {
-                return root.homeDir + "/" + path.slice(2)  // fixed: add file://
+                return root.homeDir + "/" + path.slice(2)
             } else if (path.startsWith("/")) {
                 return "file://" + path
             } else {
