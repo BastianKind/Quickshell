@@ -19,7 +19,7 @@ Rectangle {
     Connections {
         target: root.player ?? null
         function onTrackArtUrlChanged() {
-            if(root.player.trackArtUrl != ""){
+            if(root.player.trackArtUrl.trim() != ""){
                 root.trackArtUrl = root.player.trackArtUrl;
             } 
             albumArtBackground.rotation = 0
@@ -62,7 +62,7 @@ Rectangle {
                     onClicked: {
                         player.raise();
                         albumArt.source = root.trackArtUrl && root.trackArtUrl != "" ? root.trackArtUrl : "../bar/icons/AlbumCoverPlaceholder.svg"
-                        console.log("Opening player for " + root.player?.trackArtUrl)
+                        console.log("Opening player for " + albumArt.source)
                     }
                 }
 
@@ -180,9 +180,8 @@ Rectangle {
                         }
 
                         from: 0
-                        to: root.player?.length ?? 1
+                        to: root.player?.length ?? 0
 
-                        // Only track player position when not dragging
                         Binding {
                             target: seekSlider
                             property: "value"
@@ -190,9 +189,9 @@ Rectangle {
                             when: !seekSlider.pressed
                         }
 
-                        onMoved: {
-                            // onMoved fires during drag — breaks the Binding above
-                            // so the slider stays where the user dragged it
+                        FrameAnimation {
+                            running: root.player.playbackState == MprisPlaybackState.Playing
+                            onTriggered: root.player.positionChanged()
                         }
 
                         onPressedChanged: {
@@ -255,29 +254,6 @@ Rectangle {
                 }
 
                 // ── other controls ─────────────────────────────
-                Item {
-                    width: parent.width
-                    height: 32
-                    Row {
-                        ComboBox {
-                            id: playerSelector
-                            model: Mpris.players.values
-                            
-                            delegate: ItemDelegate {
-                                width: playerSelector.width
-                                text: modelData.identity
-                            }
-                            
-                            displayText: currentIndex >= 0 && model[currentIndex] 
-                                        ? model[currentIndex].identity 
-                                        : "No player"
-                            
-                            onActivated: (index) => {
-                                root.player = model[index]
-                            }
-                        }
-                    }
-                }
             }
         }
     }
