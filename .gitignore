@@ -9,8 +9,8 @@
 *.so.*
 *.dll
 *.dylib
-*mp4
 *.gif
+*.mp4
 
 # qml .qmlls.ini file
 .qmlls.ini
