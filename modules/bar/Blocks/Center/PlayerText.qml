@@ -6,6 +6,7 @@ import qs.modules.musicPopOut
 
 Row {
     id: root
+    property var players: Mpris.players.values.filter(p=>p.canPlay)
     required property string screenName
     function limitLength(text, length) {
         return ((text.length > length) ? text.slice(0, length) + "..." : text);
@@ -20,10 +21,10 @@ Row {
         let text = limitLength(trackTitle == "" ? "Unknown Title" : trackTitle, 50) + limitLength(trackArtist == "" ? " ~ Unknown Artist" : " ~ " + trackArtist, 50);
         return text;
     }
-    visible: Mpris.players.values.length > 0 && getText(Mpris.players.values[Mpris.players.values.length - 1]) != "Unknown Title ~ Unknown Artist"
+    visible: players.length > 0 && getText(players[players.length - 1]) != "Unknown Title ~ Unknown Artist"
     Text {
         id: playerText
-        property var player: Mpris.players.values[Mpris.players.values.length - 1] ?? null
+        property var player: root.players[root.players.length - 1] ?? null
         text: root.getText(player) ?? ""
         color: "white"
         font.pixelSize: 16
