@@ -3,15 +3,14 @@ import QtQuick
 import QtQuick.Controls
 import Quickshell.Services.Mpris
 import Quickshell.Widgets
-import QtQuick.Controls
 
 Rectangle {
     id: root
     anchors.fill: parent
     color: "transparent"
-    property var players: Mpris.players.values.filter(p=>p.canPlay)
+    property var players: Mpris.players.values.filter(p => p.canPlay)
     property var player: players[players.length - 1]
-    property string trackArtUrl: player.trackArtUrl;
+    property string trackArtUrl: player.trackArtUrl
     property bool hasValidArt: trackArtUrl != "" && trackArtUrl != null && !trackArtUrl.toString().endsWith("AlbumCoverPlaceholder.svg") && albumArt.status === Image.Ready
     property real contentHeight: hasValidArt && albumArt.paintedHeight > 0 ? albumArt.paintedHeight + 32 : Math.min(albumArtBackground.width, 320) + 32
     property real desiredHeight: contentHeight + 32
@@ -20,10 +19,10 @@ Rectangle {
     Connections {
         target: root.player ?? null
         function onTrackArtUrlChanged() {
-            if(root.player.trackArtUrl.trim() != ""){
+            if (root.player.trackArtUrl.trim() != "") {
                 root.trackArtUrl = root.player.trackArtUrl;
-            } 
-            albumArtBackground.rotation = 0
+            }
+            albumArtBackground.rotation = 0;
         }
     }
 
@@ -52,7 +51,7 @@ Rectangle {
                 anchors.centerIn: parent
                 width: parent.width
                 fillMode: Image.PreserveAspectFit
-                rotation: 0;
+                rotation: 0
                 cache: false
                 source: root.trackArtUrl && root.trackArtUrl != "" ? root.trackArtUrl : "../bar/icons/AlbumCoverPlaceholder.svg"
                 sourceSize: Qt.size(320, 320)
@@ -62,11 +61,10 @@ Rectangle {
                     cursorShape: Qt.PointingHandCursor
                     onClicked: {
                         player.raise();
-                        albumArt.source = root.trackArtUrl && root.trackArtUrl != "" ? root.trackArtUrl : "../bar/icons/AlbumCoverPlaceholder.svg"
-                        console.log("Opening player for " + albumArt.source)
+                        albumArt.source = root.trackArtUrl && root.trackArtUrl != "" ? root.trackArtUrl : "../bar/icons/AlbumCoverPlaceholder.svg";
+                        console.log("Opening player for " + albumArt.source);
                     }
                 }
-
             }
 
             Rectangle {
@@ -88,7 +86,7 @@ Rectangle {
                 duration: 20000
                 direction: RotationAnimation.Clockwise
                 loops: Animation.Infinite
-                running: (root.player?.isPlaying ?? false) && root.artIsSquare            
+                running: (root.player?.isPlaying ?? false) && root.artIsSquare
             }
         }
     }
@@ -120,11 +118,13 @@ Rectangle {
                 // ── Track info ──────────────────────────────────────
                 Item {
                     width: parent.width
-                    height: root.player?.canSeek ?? false
-                        ? spacerArea.height * 0.45
-                        : spacerArea.height * 0.55
+                    height: root.player?.canSeek ?? false ? spacerArea.height * 0.45 : spacerArea.height * 0.55
 
-                    Behavior on height { NumberAnimation { duration: 200 } }
+                    Behavior on height {
+                        NumberAnimation {
+                            duration: 200
+                        }
+                    }
 
                     Column {
                         anchors.centerIn: parent
@@ -170,7 +170,11 @@ Rectangle {
                     visible: height > 0
                     clip: true
 
-                    Behavior on height { NumberAnimation { duration: 200 } }
+                    Behavior on height {
+                        NumberAnimation {
+                            duration: 200
+                        }
+                    }
 
                     Slider {
                         id: seekSlider
@@ -198,8 +202,8 @@ Rectangle {
                         onPressedChanged: {
                             // Seek on release, not on press
                             if (!pressed && root.player?.canSeek && root.player?.positionSupported) {
-                                console.log("Seeking to " + seekSlider.value)
-                                root.player.position = seekSlider.value
+                                console.log("Seeking to " + seekSlider.value);
+                                root.player.position = seekSlider.value;
                             }
                         }
                     }
@@ -220,11 +224,17 @@ Rectangle {
                             color: root.player === undefined ? "white" : (root.player.canGoPrevious ? "white" : "gray")
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Text.AlignVCenter
-                            font { family: "JetBrainsMono Nerd Font Mono"; pixelSize: 32 }
+                            font {
+                                family: "JetBrainsMono Nerd Font Mono"
+                                pixelSize: 32
+                            }
                             MouseArea {
                                 anchors.fill: parent
                                 cursorShape: root.player?.canGoPrevious ? Qt.PointingHandCursor : Qt.ArrowCursor
-                                onClicked: { if (root.player?.canGoPrevious) root.player.previous() }
+                                onClicked: {
+                                    if (root.player?.canGoPrevious)
+                                        root.player.previous();
+                                }
                             }
                         }
                         Text {
@@ -232,11 +242,17 @@ Rectangle {
                             color: root.player?.canTogglePlaying ? "white" : "gray"
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Text.AlignVCenter
-                            font { family: "JetBrainsMono Nerd Font Mono"; pixelSize: 80 }
+                            font {
+                                family: "JetBrainsMono Nerd Font Mono"
+                                pixelSize: 80
+                            }
                             MouseArea {
                                 anchors.fill: parent
                                 cursorShape: root.player?.canTogglePlaying ? Qt.PointingHandCursor : Qt.ArrowCursor
-                                onClicked: { if (root.player?.canTogglePlaying) root.player.togglePlaying() }
+                                onClicked: {
+                                    if (root.player?.canTogglePlaying)
+                                        root.player.togglePlaying();
+                                }
                             }
                         }
                         Text {
@@ -244,11 +260,17 @@ Rectangle {
                             color: root.player === undefined ? "white" : (root.player.canGoNext ? "white" : "gray")
                             anchors.verticalCenter: parent.verticalCenter
                             verticalAlignment: Text.AlignVCenter
-                            font { family: "JetBrainsMono Nerd Font Mono"; pixelSize: 32 }
+                            font {
+                                family: "JetBrainsMono Nerd Font Mono"
+                                pixelSize: 32
+                            }
                             MouseArea {
                                 anchors.fill: parent
                                 cursorShape: root.player?.canGoNext ? Qt.PointingHandCursor : Qt.ArrowCursor
-                                onClicked: { if (root.player?.canGoNext) root.player.next() }
+                                onClicked: {
+                                    if (root.player?.canGoNext)
+                                        root.player.next();
+                                }
                             }
                         }
                     }

@@ -10,66 +10,79 @@ Rectangle {
     }
     implicitWidth: content.desiredWidth
     color: "transparent"
-    
+
     Process {
         id: processHandler
     }
 
-    function getVolume(){
-        if(!Pipewire.ready){
+    function getVolume() {
+        if (!Pipewire.ready) {
             return 0;
         }
-        if(Pipewire.defaultAudioSink.audio.muted){
-            return 0; 
-        }
-        else {
+        if (Pipewire.defaultAudioSink.audio.muted) {
+            return 0;
+        } else {
             return ((Pipewire.defaultAudioSink.audio.volume * 100).toFixed(0));
         }
     }
 
     function formatVolume(): string {
-        if(!Pipewire.ready){
+        if (!Pipewire.ready) {
             return "";
         }
-        if(Pipewire.defaultAudioSink.audio.muted){
-            return ""; 
-        }
-        else {
+        if (Pipewire.defaultAudioSink.audio.muted) {
+            return "";
+        } else {
             return (getVolume() + "%");
         }
     }
 
-    function getIcon(): string {
-        if(!Pipewire.ready){
+    function getSuffixes(): string {
+        if (Pipewire.defaultAudioSink.name.includes("bluez")) {
+            return "\udb80\udcaf";
+        } else {
             return "";
         }
-        if(Pipewire.defaultAudioSink.audio.muted){
+    }
+    function getIcon(): string {
+        if (!Pipewire.ready) {
+            return "";
+        }
+        if (Pipewire.defaultAudioSink.audio.muted) {
             return "\udb81\udf5f";
         }
-        switch(true){
-            case (getVolume() >= 67):
-                return "\udb81\udd7e";
-            case (getVolume() >= 34):
-                return "\udb81\udd80";
-            case (getVolume() >= 1):
-                return "\udb81\udd7f";
+        switch (true) {
+        case (getVolume() >= 67):
+            return "\udb81\udd7e";
+        case (getVolume() >= 34):
+            return "\udb81\udd80";
+        case (getVolume() >= 1):
+            return "\udb81\udd7f";
         }
-        return "\udb83\ude08"
+        return "\udb83\ude08";
     }
-    function getIconPixelSize(): int {
-        if(!Pipewire.ready){
+    function getSuffixSize(): int {
+        if (Pipewire.defaultAudioSink.name.includes("bluez")) {
+            return 16;
+        } else {
             return 0;
         }
-        if(Pipewire.defaultAudioSink.audio.muted){
+        // return 20;
+    }
+    function getIconPixelSize(): int {
+        if (!Pipewire.ready) {
+            return 0;
+        }
+        if (Pipewire.defaultAudioSink.audio.muted) {
             return 26;
         }
-        switch(true){
-            case (getVolume() >= 67):
-                return 22;
-            case (getVolume() >= 34):
-                return 18;
-            case (getVolume() >= 1):
-                return 14;
+        switch (true) {
+        case (getVolume() >= 67):
+            return 22;
+        case (getVolume() >= 34):
+            return 18;
+        case (getVolume() >= 1):
+            return 14;
         }
         return 20;
     }
@@ -78,7 +91,7 @@ Rectangle {
         repeat: !Pipewire.ready
         interval: 25
         onTriggered: {
-            textVolume.text = root.formatVolume()
+            textVolume.text = root.formatVolume();
         }
     }
 
@@ -116,7 +129,7 @@ Rectangle {
         id: content
         anchors.verticalCenter: parent.verticalCenter
         spacing: 4
-        property real desiredWidth: textIcon.width + textVolume.width + spacing
+        property real desiredWidth: textIcon.width + textVolume.width + spacing + (getSuffixes() ? suffixes.width + spacing : 0)
 
         Text {
             id: textIcon
@@ -127,7 +140,6 @@ Rectangle {
                 family: "JetBrainsMono Nerd Font Mono"
                 pixelSize: getIconPixelSize()
             }
-            
         }
         Text {
             id: textVolume
@@ -159,7 +171,16 @@ Rectangle {
             onOriginVolumeChanged: {
                 textVolume.text = root.formatVolume();
             }
-            
+        }
+        Text {
+            id: suffixes
+            text: getSuffixes()
+            anchors.verticalCenter: parent.verticalCenter
+            color: "#ffffff"
+            font {
+                family: "JetBrainsMono Nerd Font Mono"
+                pixelSize: 16
+            }
         }
     }
 }
