@@ -38,7 +38,7 @@ Rectangle {
     }
 
     function getSuffixes(): string {
-        if (Pipewire.defaultAudioSink.name.includes("bluez")) {
+        if (Pipewire.defaultAudioSink?.name.includes("bluez")) {
             return "\udb80\udcaf";
         } else {
             return "";

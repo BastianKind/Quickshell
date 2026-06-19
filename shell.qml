@@ -3,6 +3,7 @@
 import QtQuick
 import Quickshell
 import "./modules/"
+import qs.modules.lockscreen
 
 ShellRoot {
     id: root
@@ -10,5 +11,8 @@ ShellRoot {
     Loader {
         active: true
         sourceComponent: Root {}
+    }
+    LockScreen {
+        id: lockScreen
     }
 }

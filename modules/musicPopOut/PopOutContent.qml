@@ -10,7 +10,7 @@ Rectangle {
     color: "transparent"
     property var players: Mpris.players.values.filter(p => p.canPlay)
     property var player: players[players.length - 1]
-    property string trackArtUrl: player.trackArtUrl
+    property string trackArtUrl: player?.trackArtUrl ?? ""
     property bool hasValidArt: trackArtUrl != "" && trackArtUrl != null && !trackArtUrl.toString().endsWith("AlbumCoverPlaceholder.svg") && albumArt.status === Image.Ready
     property real contentHeight: hasValidArt && albumArt.paintedHeight > 0 ? albumArt.paintedHeight + 32 : Math.min(albumArtBackground.width, 320) + 32
     property real desiredHeight: contentHeight + 32
@@ -195,8 +195,8 @@ Rectangle {
                         }
 
                         FrameAnimation {
-                            running: root.player.playbackState == MprisPlaybackState.Playing
-                            onTriggered: root.player.positionChanged()
+                            running: root.player?.playbackState == MprisPlaybackState.Playing
+                            onTriggered: root.player?.positionChanged()
                         }
 
                         onPressedChanged: {
